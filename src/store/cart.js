@@ -7,6 +7,22 @@ export const addToCart = (produceId) => {
     }
 }
 
+export const decrement = (produceId) => {
+    const DECREMENT = 'decrement';
+    return {
+        type: DECREMENT,
+        produceId
+    }
+}
+
+export const removeFromCart = (produceId) => {
+    const REMOVEFROMCART = 'removeFromCart';
+    return {
+        type: REMOVEFROMCART,
+        produceId
+    }
+}
+
 export const cartReducer = (state = {}, action) => {
     const newState = Object.assign({}, Object.freeze(state))
     switch (action.type) {
@@ -18,6 +34,15 @@ export const cartReducer = (state = {}, action) => {
                     id: action.produceId, 
                     count: 1
             }}
+            return newState;
+        case 'decrement':
+            const itemCount = newState[action.produceId].count;
+            if (itemCount > 0) {
+                newState[action.produceId].count = itemCount - 1;
+            }
+            return newState
+        case 'removeFromCart':
+            delete newState[action.produceId];
             return newState;
         default: 
             return state;
