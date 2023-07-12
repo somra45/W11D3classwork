@@ -1,4 +1,13 @@
 
+
+// export const getAllCart = (state) => {
+//     cartValues = Object.values(state.cart);
+//     for (let i = 0; i < cartValues.length, i++) {
+//         cartValues[i].produceInfo = state.produce[cartValues[i].id];
+//     }
+//     return cartValues;
+// }
+
 export const addToCart = (produceId) => {
     const ADDTOCART = 'addToCart';
     return {
@@ -23,6 +32,14 @@ export const removeFromCart = (produceId) => {
     }
 }
 
+export const toggleCart = (boolean) => {
+    const TOGGLECART = 'toggleCart';
+    return {
+        type: TOGGLECART,
+        boolean
+    }
+}
+
 export const cartReducer = (state = {}, action) => {
     const newState = Object.assign({}, Object.freeze(state))
     switch (action.type) {
@@ -30,10 +47,12 @@ export const cartReducer = (state = {}, action) => {
             if (newState[action.produceId]) {
                 newState[action.produceId].count = newState[action.produceId].count + 1
             } else {
-                newState[action.produceId] ={
+                newState[action.produceId] = {
                     id: action.produceId, 
-                    count: 1
+                    count: 1,
+                    date: new Date()
             }}
+            newState.cartOpen = true;
             return newState;
         case 'decrement':
             const itemCount = newState[action.produceId].count;
@@ -43,6 +62,10 @@ export const cartReducer = (state = {}, action) => {
             return newState
         case 'removeFromCart':
             delete newState[action.produceId];
+            newState.cartOpen = true;
+            return newState;
+        case 'toggleCart':
+            newState.cartOpen = action.boolean;
             return newState;
         default: 
             return state;

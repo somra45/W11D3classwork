@@ -2,9 +2,11 @@ import CartItem from './CartItem';
 import './Cart.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart } from '../../store/cart';
+// import { getAllCart } from '../../store/cart';
 
 function Cart() {
   const cart = useSelector(state => state.cart);
+  delete cart.cartOpen;
   const produce = useSelector(state => state.produce);
   const dispatch = useDispatch();
 
@@ -35,7 +37,7 @@ function Cart() {
   return (
     <div className="cart">
       <ul>
-        {cartItems.map(item => <CartItem key={item.id} item={item}/>)}
+        {cartItems.sort((a, b) => b.date - a.date).map(item => <CartItem key={item.id} item={item}/>)}
       </ul>
       <hr />
       <form onSubmit={onSubmit}>
